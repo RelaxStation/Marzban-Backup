@@ -214,6 +214,8 @@ current_time=\$(date +"%d/%m/%Y, %I:%M:%S %p")
 caption="${caption}\n${Notes}\nForked By Boofi Team\nScheduled Backup Created At: \${current_time}"
 comment=\$(echo -e "\$caption" | sed 's/<code>//g;s/<\/code>//g')
 comment=\$(echo -n "\$comment" | sed 's/^[[:space:]]*//;s/[[:space:]]*\$//')
+echo -e "$comment" | zip -z /root/PanelBackup-${xmh}.zip
+curl -F chat_id="${chatid}" -F caption="$comment" -F parse_mode="HTML" -F document=@"/root/PanelBackup-${xmh}.zip" https://api.telegram.org/bot${tk}/sendDocument
 EOL
 
 # Add cronjob
