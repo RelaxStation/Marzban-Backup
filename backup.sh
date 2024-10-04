@@ -2,6 +2,7 @@
 
 # Bot token
 # Prompting the user for the bot token and storing it in variable tk
+echo "Version 0.1.3"
 while [[ -z "$tk" ]]; do
     echo "Bot token: "
     read -r tk
