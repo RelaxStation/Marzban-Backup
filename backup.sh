@@ -197,34 +197,24 @@ trim() {
     echo -n "$var"
 }
 
-cat > "/root/PanelBackup-${xmh}.sh" <<'EOL'
-#!/bin/bash
-
-# Remove old backup
-rm -rf /root/PanelBackup-${xmh}.zip
-
-# Run the backup command and log output
-$ZIP > /root/backup_log.txt 2>&1
-
-# Check if the backup file was created successfully
-if [ ! -f "/root/PanelBackup-${xmh}.zip" ]; then
-    echo "Backup file was not created!"
-    exit 1
-fi
-
-# Get the current time and IP dynamically each time
 IP=$(ip route get 1 | sed -n 's/^.*src \([0-9.]*\) .*$/\1/p')
-current_time=$(date +"%d/%m/%Y, %I:%M:%S %p")
-
-# Prepare the caption dynamically each time
-caption="${caption}\n${Notes}\nForked By Boofi Team\nScheduled Backup Created At: ${current_time}"
+caption="${caption}\n${Notes}\nForked By Boofi Team\nScheduled Backup Created At: $(date +"%d/%m/%Y, %I:%M:%S %p")"
 comment=$(echo -e "$caption" | sed 's/<code>//g;s/<\/code>//g')
 comment=$(echo -n "$comment" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
-# Send backup to Telegram
-curl -F chat_id="${chatid}" -F caption="$comment" -F parse_mode="HTML" -F document=@"/root/PanelBackup-${xmh}.zip" https://api.telegram.org/bot${tk}/sendDocument
+# install zip
+# نصب پکیج zip
+sudo apt install zip -y
 
+# send backup to telegram
+# ارسال فایل پشتیبانی به تلگرام
+cat > "/root/PanelBackup-${xmh}.sh" <<EOL
+rm -rf /root/PanelBackup-${xmh}.zip
+$ZIP
+echo -e "$comment" | zip -z /root/PanelBackup-${xmh}.zip
+curl -F chat_id="${chatid}" -F caption="$comment" -F parse_mode="HTML" -F document=@"/root/PanelBackup-${xmh}.zip" https://api.telegram.org/bot${tk}/sendDocument
 EOL
+
 
 # Add cronjob
 # افزودن کرانجاب جدید برای اجرای دوره‌ای این اسکریپت
