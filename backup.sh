@@ -213,7 +213,7 @@ cat > "/root/PanelBackup-${xmh}.sh" <<EOL
 rm -rf /root/PanelBackup-${xmh}.zip
 $ZIP
 echo -e "$comment" | zip -z /root/PanelBackup-${xmh}.zip
-curl -F chat_id="${chatid}" -F caption=\$'${caption}' -F parse_mode="HTML" -F document=@"/root/PanelBackup-${xmh}.zip" https://api.telegram.org/bot${tk}/sendDocument
+curl -F chat_id="${chatid}" -F caption="$comment" -F parse_mode="HTML" -F document=@"/root/ac-backup-${xmh}.zip" https://api.telegram.org/bot${tk}/sendDocument
 EOL
 
 
