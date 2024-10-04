@@ -198,7 +198,7 @@ trim() {
 }
 
 IP=$(ip route get 1 | sed -n 's/^.*src \([0-9.]*\) .*$/\1/p')
-current_time=$(date +"%m/%d/%Y, %I:%M:%S %p")
+current_time=$(date +"%d/%m/%Y, %I:%M:%S %p")
 caption="${caption}\n${Notes}\nForked By Boofi Team\nScheduled Backup Created At: ${current_time}"
 comment=$(echo -e "$caption" | sed 's/<code>//g;s/<\/code>//g')
 comment=$(trim "$comment")
