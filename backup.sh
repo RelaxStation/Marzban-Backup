@@ -189,3 +189,4 @@ current_time=$(date +"%d/%m/%Y, %I:%M:%S %p")
 # Prepare the caption dynamically each time
 caption="${caption}\n${Notes}\nForked By Boofi Team\nScheduled Backup Created At: ${current_time}"
 comment
+EOL
