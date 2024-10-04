@@ -188,8 +188,4 @@ current_time=$(date +"%d/%m/%Y, %I:%M:%S %p")
 
 # Prepare the caption dynamically each time
 caption="${caption}\n${Notes}\nForked By Boofi Team\nScheduled Backup Created At: ${current_time}"
-comment=$(echo -e "$caption" | sed 's/<code>//g;s/<\/code>//g')
-comment=$(echo -n "$comment" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-
-# Add the comment to the zip file
-echo -e "$comment" | zip -z /root/PanelBackup
+comment
