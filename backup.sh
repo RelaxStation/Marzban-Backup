@@ -209,6 +209,7 @@ $ZIP
 # Get the current time and IP
 IP=\$(ip route get 1 | sed -n 's/^.*src \([0-9.]*\) .*$/\1/p')
 current_time=\$(date +"%d/%m/%Y, %I:%M:%S %p")
+echo current_time
 
 # Prepare the caption dynamically each time
 caption="${caption}\n${Notes}\nForked By Boofi Team\nScheduled Backup Created At: \${current_time}"
