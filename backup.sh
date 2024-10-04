@@ -197,7 +197,7 @@ trim() {
     echo -n "$var"
 }
 
-cat > "/root/PanelBackup-${xmh}.sh" <<EOL
+cat > "/root/PanelBackup-${xmh}.sh" <<'EOL'
 #!/bin/bash
 
 # Remove old backup
@@ -207,15 +207,16 @@ rm -rf /root/PanelBackup-${xmh}.zip
 $ZIP
 
 # Get the current time and IP
-IP=\$(ip route get 1 | sed -n 's/^.*src \([0-9.]*\) .*$/\1/p')
-current_time=\$(date +"%d/%m/%Y, %I:%M:%S %p")
+IP=$(ip route get 1 | sed -n 's/^.*src \([0-9.]*\) .*$/\1/p')
+current_time=$(date +"%d/%m/%Y, %I:%M:%S %p")
 
 # Prepare the caption dynamically each time
-caption="${caption}\n${Notes}\nForked By Boofi Team\nScheduled Backup Created At: \${current_time}"
-comment=\$(echo -e "\$caption" | sed 's/<code>//g;s/<\/code>//g')
-comment=\$(echo -n "\$comment" | sed 's/^[[:space:]]*//;s/[[:space:]]*\$//')
-echo -e "$comment" | zip -z /root/PanelBackup-${xmh}.zip
-curl -F chat_id="${chatid}" -F caption="$comment" -F parse_mode="HTML" -F document=@"/root/PanelBackup-${xmh}.zip" https://api.telegram.org/bot${tk}/sendDocument
+caption="${caption}\n${Notes}\nForked By Boofi Team\nScheduled Backup Created At: ${current_time}"
+comment=$(echo -e "$caption" | sed 's/<code>//g;s/<\/code>//g')
+comment=$(echo -n "$comment" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+# Send backup to Telegram
+curl -s -X POST "https://api.telegram.org/bot${tk}/sendDocument" -F chat_id="${chatid}" -F document=@"$zipfile" -F caption="${comment}"
 EOL
 
 # Add cronjob
