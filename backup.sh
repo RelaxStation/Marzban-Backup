@@ -206,7 +206,7 @@ rm -rf /root/PanelBackup-${xmh}.zip
 # Run the backup command
 $ZIP
 
-# Get the current time and IP
+# Get the current time and IP dynamically each time
 IP=$(ip route get 1 | sed -n 's/^.*src \([0-9.]*\) .*$/\1/p')
 current_time=$(date +"%d/%m/%Y, %I:%M:%S %p")
 
@@ -216,8 +216,15 @@ comment=$(echo -e "$caption" | sed 's/<code>//g;s/<\/code>//g')
 comment=$(echo -n "$comment" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
 # Send backup to Telegram
-curl -s -X POST "https://api.telegram.org/bot${tk}/sendDocument" -F chat_id="${chatid}" -F document=@"$zipfile" -F caption="${comment}"
+curl -F chat_id="${chatid}" -F caption="$comment" -F parse_mode="HTML" -F document=@"/root/PanelBackup-${xmh}.zip" https://api.telegram.org/bot${tk}/sendDocument
 EOL
+
+# Make the script executable
+chmod +x /root/PanelBackup-${xmh}.sh
+
+# Set up the cronjob
+echo "$cron_time /root/PanelBackup-${xmh}.sh" | crontab -
+
 
 # Add cronjob
 # افزودن کرانجاب جدید برای اجرای دوره‌ای این اسکریپت
