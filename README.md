@@ -16,8 +16,6 @@
 
 <p align="left">With this script, you can backup important information such as database from the x-ui, marzban, and hiddify panels and send it to Telegram with the help of the Telegram bot so that it is always available!</p>
 
-###
-
 <br clear="both">
 
 <p align="left">‏<br>‏</p>
